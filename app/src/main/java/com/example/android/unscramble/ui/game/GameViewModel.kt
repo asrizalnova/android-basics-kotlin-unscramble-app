@@ -10,3 +10,12 @@ class GameViewModel : ViewModel() {
     val currentScrambledWord: String
         get() = _currentScrambledWord
 }
+init {
+    Log.d("GameFragment", "GameViewModel created!")
+    getNextWord()
+}
+
+override fun onCleared() {
+    super.onCleared()
+    Log.d("GameFragment", "GameViewModel destroyed!")
+}
