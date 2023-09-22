@@ -147,3 +147,4 @@ class GameFragment : Fragment() {
         binding.textViewUnscrambledWord.text = viewModel.currentScrambledWord
     }
 }
+
