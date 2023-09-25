@@ -64,6 +64,15 @@ class GameFragment : Fragment() {
             { newWord ->
                 binding.textViewUnscrambledWord.text = newWord
             })
+        viewModel.score.observe(viewLifecycleOwner,
+            { newScore ->
+                binding.score.text = getString(R.string.score, newScore)
+            })
+        viewModel.currentWordCount.observe(viewLifecycleOwner,
+            { newWordCount ->
+                binding.wordCount.text =
+                    getString(R.string.word_count, newWordCount, MAX_NO_OF_WORDS)
+            })
     }
 
     /*
