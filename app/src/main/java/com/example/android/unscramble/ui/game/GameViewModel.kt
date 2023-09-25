@@ -6,7 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class GameViewModel : ViewModel() {
-    private var _score = 0
+    //private var _score = 0
+    private val _score = MutableLiveData(0)
+    val score: LiveData<Int>
+        get() = _score
+
     val score: Int
         get() = _score
 
