@@ -76,12 +76,20 @@ class GameFragment : Fragment() {
     * Displays the next scrambled word.
     */
     private fun onSubmitWord() {
-        if (viewModel.nextWord()) {
-            updateNextWordOnScreen()
+        val playerWord = binding.textInputEditText.text.toString()
+
+        if (viewModel.isUserWordCorrect(playerWord)) {
+            setErrorTextField(false)
+            if (viewModel.nextWord()) {
+                updateNextWordOnScreen()
+            } else {
+                showFinalScoreDialog()
+            }
         } else {
-            showFinalScoreDialog()
+            setErrorTextField(true)
         }
     }
+
 
     /*
      * Skips the current word without changing the score.
@@ -128,6 +136,16 @@ class GameFragment : Fragment() {
     /*
     * Sets and resets the text field error status.
     */
+    private fun setErrorTextField(error: Boolean) {
+        if (error) {
+            binding.textField.isErrorEnabled = true
+            binding.textField.error = getString(R.string.try_again)
+        } else {
+            binding.textField.isErrorEnabled = false
+            binding.textInputEditText.text = null
+        }
+    }
+
     private fun setErrorTextField(error: Boolean) {
         if (error) {
             binding.textField.isErrorEnabled = true
