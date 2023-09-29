@@ -27,7 +27,7 @@
                 type="int" />
     </data>
 
-    <ScrollView
+    <ScrollViewandroid:text="@{gameViewModel.currentScrambledWord}"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -81,7 +81,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/word_count"
-            tools:text="Scramble word" />
+            tools:text="Scramble word"
+            android:text="@{gameViewModel.currentScrambledWord}"/>
 
         <TextView
             android:id="@+id/word_count"
