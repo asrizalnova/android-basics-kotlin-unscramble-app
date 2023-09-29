@@ -6,31 +6,36 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class GameViewModel : ViewModel() {
-    //private var _score = 0
-    private val _score = MutableLiveData(0)
-    val score: LiveData<Int>
-        get() = _score
-
+    private var _score = 0
     val score: Int
         get() = _score
 
-    //private var _currentWordCount = 0
-    private val _currentWordCount = MutableLiveData(0)
-    val currentWordCount: LiveData<Int>
-        get() = _currentWordCount
+
+    private var _currentWordCount = 0
     val currentWordCount: Int
         get() = _currentWordCount
 
-
-    private val _currentScrambledWord = MutableLiveData<String>()
-
-    val currentScrambledWord: LiveData<String>
+    private lateinit var _currentScrambledWord: String
+    val currentScrambledWord: String
         get() = _currentScrambledWord
 
+    // List of words used in the game
     private var wordsList: MutableList<String> = mutableListOf()
     private lateinit var currentWord: String
 
+    init {
+        Log.d("GameFragment", "GameViewModel created!")
+        getNextWord()
+    }
 
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("GameFragment", "GameViewModel destroyed!")
+    }
+
+    /*
+    * Updates currentWord and currentScrambledWord with the next word.
+    */
     private fun getNextWord() {
         currentWord = allWordsList.random()
         val tempWord = currentWord.toCharArray()
