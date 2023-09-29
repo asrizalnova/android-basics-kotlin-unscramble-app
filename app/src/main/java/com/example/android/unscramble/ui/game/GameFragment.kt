@@ -10,7 +10,7 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and 
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
@@ -27,6 +27,10 @@ import androidx.fragment.app.viewModels
 import com.example.android.unscramble.R
 import com.example.android.unscramble.databinding.GameFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+
+private var GameFragmentBinding.gameviewModel: GameViewModel
+    get() {}
+    set() {}
 
 /**
  * Fragment where the game is played, contains the game logic.
@@ -55,27 +59,19 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Set the viewModel for data binding - this allows the bound layout access
+        // to all the data in the VieWModel
+        binding.gameviewModel = viewModel
+        binding.maxNoOfWords = MAX_NO_OF_WORDS
+        // Specify the fragment view as the lifecycle owner of the binding.
+        // This is used so that the binding can observe LiveData updates
+        binding.lifecycleOwner = viewLifecycleOwner
+
         // Setup a click listener for the Submit and Skip buttons.
         binding.submit.setOnClickListener { onSubmitWord() }
         binding.skip.setOnClickListener { onSkipWord() }
-        // Update the UI
-        updateNextWordOnScreen()
-
-        viewModel.currentScrambledWord.observe(viewLifecycleOwner,
-            { newWord ->
-                binding.textViewUnscrambledWord.text = newWord
-            })
-        viewModel.score.observe(viewLifecycleOwner,
-            { newScore ->
-                binding.score.text = getString(R.string.score, newScore)
-            })
-        viewModel.currentWordCount.observe(viewLifecycleOwner,
-            { newWordCount ->
-                binding.wordCount.text =
-                    getString(R.string.word_count, newWordCount, MAX_NO_OF_WORDS)
-            })
+        if (viewModel.isGameOver()) { showFinalScoreDialog() }
     }
-
     /*
     * Checks the user's word, and updates the score accordingly.
     * Displays the next scrambled word.
@@ -129,7 +125,7 @@ class GameFragment : Fragment() {
             .show()
     }
 
-    
+
 
     /*
      * Re-initializes the data in the ViewModel and updates the views with the new data, to
